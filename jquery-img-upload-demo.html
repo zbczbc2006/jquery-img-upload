@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+		<title>图片上传插件测试</title>
+		<script src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>	
+		<script src="./jquery-img-upload.js"></script>
+		<link href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+		<link href="./jquery-img-upload.css" rel="stylesheet" >
+	</head>
+
+<body>
+	<p> 简易api:</p>                        
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>方法名称</th>
+            <th>参数</th>
+            <th>作用</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>imgUploadReady</td>
+            <td>参数信息option（js对象）</td>
+            <td>启动插件</td>
+          </tr>
+          <tr>
+            <td>imgUploadAction</td>
+            <td>无</td>
+            <td>开始上传，用于取代上传按钮</td>
+          </tr>
+          <tr>
+            <td>imgUploadAbort</td>
+            <td>无</td>
+            <td>取消上传，用于取代取消按钮</td>
+          </tr>
+        </tbody>
+      </table>
+       <p> option设置参数说明:</p>                        
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>名称</th>
+            <th>说明</th>
+            <th>默认值</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>url</td>
+            <td>图片上传地址</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>maxNum</td>
+            <td>一次上传最大图片数，0为无限制</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>hideBtn</td>
+            <td>是否隐藏上传、取消按钮</td>
+            <td>false</td>
+          </tr>
+          <tr>
+            <td>compress</td>
+            <td>是否启动压缩（gif格式不会被压缩）</td>
+            <td>false</td>
+          </tr>
+          <tr>
+            <td>maxSize</td>
+            <td>单张图片启用压缩的阈值，当compress为true且图片大小大于maxSize时该图片才会被压缩，单位B（字节）</td>
+            <td>1024 * 1024</td>
+          </tr>
+          <tr>
+            <td>maxWidth</td>
+            <td>需要压缩时压缩图片最大宽度，单位px</td>
+            <td>1024</td>
+          </tr>
+          <tr>
+            <td>maxHeight</td>
+            <td>需要压缩时压缩图片最大高度，单位px</td>
+            <td>1024</td>
+          </tr>
+          <tr>
+            <td>timeout</td>
+            <td>设置超时等待时间，0为不设置超时，单位ms</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>onsuccess</td>
+            <td>上传成功时回调，回调参数：1.服务器返回结果；2.xhr默认事件对象</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>onerror</td>
+            <td>上传失败时回调，回调参数：xhr默认事件对象</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>ondone</td>
+            <td>成功与否都会调用，回调参数：xhr默认事件对象</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>ontimeout</td>
+            <td>超时回调，回调参数：xhr默认事件对象</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>onabort</td>
+            <td>取消上传时回调，回调参数：xhr默认事件对象</td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+	  <strong>注意：压缩后文件大小受最大宽高影响，不保证小于maxSize</strong><br>
+	  <strong>以下为例子，详见页面源码</strong>
+	  <br><br>
+
+<div id = 'img'></div>
+</body>
+<script>
+$(img).imgUploadReady({
+	url:'http://aa/bb.go',//图片上传地址
+	maxNum : 5, //最大图片数，0为无限制
+	compress : true, //是否启动压缩
+	hideBtn:false,
+	maxSize : 8 * 1024, //单张图片启用压缩的阈值，ifCompress为true时有效
+	maxWidth : 500, //需要压缩时压缩图片最大宽度
+	maxHeight : 500, //需要压缩时压缩图片最大高度
+	timeout:0,	//设置超时等待时间，0为不设置超时
+	onsuccess:function(result){//上传成功时回调
+		console.log('success');
+		var imgs = result.data.split(",");
+		for(var i in imgs){
+			$(img).after('<img src=http://123.59.26.49:6664/picture/'+imgs[i]+' style=max-width:300px>');
+		}
+	},
+	onerror:function(){//上传失败时回调
+		console.log('error');
+		for(var x in arguments){
+			console.log(arguments[x]);
+		}
+	},
+	ondone:function(){//成功与否都会调用
+		console.log('done');
+		for(var x in arguments){
+			console.log(arguments[x]);
+		}
+	},
+	ontimeout:function(){//超时回调
+		console.log('timeout');
+		for(var x in arguments){
+			console.log(arguments[x]);
+		}
+	}
+});
+
+</script>
+</html>
+	
